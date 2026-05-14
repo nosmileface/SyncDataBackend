@@ -33,6 +33,9 @@ return new class extends Migration
             $table->boolean('is_supply')->default(false);
             $table->boolean('is_realization')->default(false);
             $table->timestamps();
+
+            // Unique
+            $table->unique(['sc_code', 'nm_id', 'barcode']);
         });
     }
 

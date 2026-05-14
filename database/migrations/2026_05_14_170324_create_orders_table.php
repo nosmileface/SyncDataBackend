@@ -32,6 +32,9 @@ return new class extends Migration
             $table->unsignedBigInteger('income_id')->default(0);
             $table->boolean('is_cancel')->default(false);
             $table->timestamps();
+
+            // Unique
+            $table->unique(['g_number', 'nm_id', 'barcode']);
         });
     }
 

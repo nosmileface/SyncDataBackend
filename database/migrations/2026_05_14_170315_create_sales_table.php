@@ -40,8 +40,10 @@ return new class extends Migration
             $table->boolean('is_supply')->default(false);
             $table->boolean('is_realization')->default(false);
             $table->boolean('is_storno')->nullable();
-
             $table->timestamps();
+
+            // Unique
+            $table->unique(['sale_id', 'nm_id', 'barcode']);
         });
     }
 

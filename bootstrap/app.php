@@ -11,6 +11,15 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withSchedule(function (Schedule $schedule): void {
+        $schedule->command('app:sync-incomes-command')->daily();
+
+        $schedule->command('app:sync-orders-command')->daily();
+
+        $schedule->command('app:sync-sales-command')->daily();
+
+        $schedule->command('app:sync-stocks-command')->daily();
+    })
     ->withMiddleware(function (Middleware $middleware): void {
         //
     })

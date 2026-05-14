@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('income_id')->unique();
+            $table->unsignedBigInteger('income_id');
             $table->date('date');
             $table->date('last_change_date');
             $table->date('date_close')->nullable();
@@ -26,6 +26,9 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2)->default(0);
             $table->unsignedInteger('quantity')->default(0);
             $table->timestamps();
+
+            // Unique
+            $table->unique(['income_id', 'nm_id', 'barcode']);
         });
     }
 
