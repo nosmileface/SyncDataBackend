@@ -5,6 +5,7 @@ namespace App\Jobs\Order;
 use App\Services\Order\SyncOrderService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 
 class SyncOrderJob implements ShouldQueue
 {
@@ -27,6 +28,9 @@ class SyncOrderJob implements ShouldQueue
      */
     public function handle(SyncOrderService $syncOrderService): void
     {
-        $syncOrderService->syncOrders(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+        $orders = $syncOrderService->syncOrders(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+
+        Log::channel('orders')
+            ->info('[SyncOrders] Данные о заказах получены. Количество: ' . $orders . ' записей.');
     }
 }

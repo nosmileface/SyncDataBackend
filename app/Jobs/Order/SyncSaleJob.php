@@ -5,6 +5,7 @@ namespace App\Jobs\Order;
 use App\Services\Sale\SyncSaleService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 
 class SyncSaleJob implements ShouldQueue
 {
@@ -27,6 +28,9 @@ class SyncSaleJob implements ShouldQueue
      */
     public function handle(SyncSaleService $syncSaleService): void
     {
-        $syncSaleService->syncSales(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+        $sales = $syncSaleService->syncSales(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+
+        Log::channel('sales')
+            ->info('[SyncSales] Данные о продажах получены. Количество: ' . $sales . ' записей.');
     }
 }

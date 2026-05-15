@@ -5,6 +5,7 @@ namespace App\Jobs\Order;
 use App\Services\Stock\SyncStockService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 
 class SyncStockJob implements ShouldQueue
 {
@@ -26,6 +27,10 @@ class SyncStockJob implements ShouldQueue
      */
     public function handle(SyncStockService $syncStockService): void
     {
-        $syncStockService->syncStocks(dateFrom: $this->dateFrom);
+
+        $stocks = $syncStockService->syncStocks(dateFrom: $this->dateFrom);
+
+        Log::channel('stocks')
+            ->info('[SyncStocks] Данные о складах получены. Количество: ' . $stocks . ' записей.');
     }
 }

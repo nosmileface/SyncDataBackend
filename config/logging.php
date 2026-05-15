@@ -127,6 +127,26 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'incomes' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/incomes/incomes.log')
+        ],
+
+        'orders' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/orders/orders.log')
+        ],
+
+        'sales' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/sales/sales.log')
+        ],
+
+        'stocks' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/stocks/stocks.log')
+        ]
+
     ],
 
 ];

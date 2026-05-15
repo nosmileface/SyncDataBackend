@@ -5,6 +5,7 @@ namespace App\Jobs\Order;
 use App\Services\Income\SyncIncomeService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 
 class SyncIncomeJob implements ShouldQueue
 {
@@ -27,6 +28,9 @@ class SyncIncomeJob implements ShouldQueue
      */
     public function handle(SyncIncomeService $syncIncomeService): void
     {
-        $syncIncomeService->syncIncomes(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+        $incomes = $syncIncomeService->syncIncomes(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+
+        Log::channel('incomes')
+            ->info('[SyncIncomes] Данные о доходах получены. Количество: ' . $incomes . ' записей.');
     }
 }
