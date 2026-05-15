@@ -112,8 +112,8 @@ app/
 Каждый тип данных пишет в отдельный канал:
 
 ```
-storage/logs/incomes.log
-storage/logs/orders.log
-storage/logs/sales.log
-storage/logs/stocks.log
+storage/logs/incomes/incomes.log
+storage/logs/orders/orders.log
+storage/logs/sales/sales.log
+storage/logs/stocks/stocks.log
 ```
