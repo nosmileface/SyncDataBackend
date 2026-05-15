@@ -28,9 +28,20 @@ class SyncOrderJob implements ShouldQueue
      */
     public function handle(SyncOrderService $syncOrderService): void
     {
-        $orders = $syncOrderService->syncOrders(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+        try {
+            $start = microtime(true);
 
-        Log::channel('orders')
-            ->info('[SyncOrders] Данные о заказах получены. Количество: ' . $orders . ' записей.');
+            $orders = $syncOrderService->syncOrders(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+
+            $end = microtime(true);
+
+            Log::channel('orders')
+                ->info('[SyncOrders] Данные о заказах получены. Количество: ' . $orders . ' записей. Затрачено времени: ' . round($end - $start) . 'c.');
+
+        } catch (\Exception $exception)
+        {
+            Log::channel('orders')
+                ->error('[SyncOrders] Ошибка синхронизации данных. Исключение: ' . $exception);
+        }
     }
 }

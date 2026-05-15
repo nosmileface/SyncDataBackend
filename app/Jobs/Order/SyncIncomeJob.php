@@ -28,9 +28,21 @@ class SyncIncomeJob implements ShouldQueue
      */
     public function handle(SyncIncomeService $syncIncomeService): void
     {
-        $incomes = $syncIncomeService->syncIncomes(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+        try
+        {
+            $start = microtime(true);
 
-        Log::channel('incomes')
-            ->info('[SyncIncomes] Данные о доходах получены. Количество: ' . $incomes . ' записей.');
+            $incomes = $syncIncomeService->syncIncomes(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+
+            $end = microtime(true);
+
+            Log::channel('incomes')
+                ->info('[SyncIncomes] Данные о доходах получены. Количество: ' . $incomes . ' записей. Затрачено времени: ' . round($end - $start) . 'c.');
+
+        } catch (\Exception $exception)
+        {
+            Log::channel('incomes')
+                ->error('[SyncIncomes] Ошибка синхронизации данных. Исключение: ' . $exception);
+        }
     }
 }

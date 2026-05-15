@@ -27,10 +27,21 @@ class SyncStockJob implements ShouldQueue
      */
     public function handle(SyncStockService $syncStockService): void
     {
+        try
+        {
+            $start = microtime(true);
 
-        $stocks = $syncStockService->syncStocks(dateFrom: $this->dateFrom);
+            $stocks = $syncStockService->syncStocks(dateFrom: $this->dateFrom);
 
-        Log::channel('stocks')
-            ->info('[SyncStocks] Данные о складах получены. Количество: ' . $stocks . ' записей.');
+            $end = microtime(true);
+
+            Log::channel('stocks')
+                ->info('[SyncStocks] Данные о складах получены. Количество: ' . $stocks . ' записей. Затрачено времени: ' . round($end - $start) . 'c.');
+
+        } catch (\Exception $exception)
+        {
+            Log::channel('stocks')
+                ->error('[SyncStocks] Ошибка синхронизации данных. Исключение: ' . $exception);
+        }
     }
 }
