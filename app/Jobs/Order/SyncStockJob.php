@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Jobs\Order;
+
+use App\Services\Stock\SyncStockService;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
+
+class SyncStockJob implements ShouldQueue
+{
+    use Queueable;
+
+    /**
+     * Create a new job instance.
+     */
+    public function __construct
+    (
+        private string $dateFrom
+    )
+    {
+        //
+    }
+
+    /**
+     * Execute the job.
+     */
+    public function handle(SyncStockService $syncStockService): void
+    {
+        try
+        {
+            $start = microtime(true);
+
+            $stocks = $syncStockService->syncStocks(dateFrom: $this->dateFrom);
+
+            $end = microtime(true);
+
+            Log::channel('stocks')
+                ->info('[SyncStocks] Данные о складах получены. Количество: ' . $stocks . ' записей. Затрачено времени: ' . round($end - $start) . 'c.');
+
+        } catch (\Exception $exception)
+        {
+            Log::channel('stocks')
+                ->error('[SyncStocks] Ошибка синхронизации данных. Исключение: ' . $exception);
+        }
+    }
+}
