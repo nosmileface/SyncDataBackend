@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\Order\SyncSaleJob;
+use Carbon\Carbon;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -16,6 +17,10 @@ class SyncSalesCommand extends Command
      */
     public function handle(): void
     {
-        SyncSaleJob::dispatchSync();
+        SyncSaleJob::dispatchSync
+        (
+            dateFrom: Carbon::today()->startOfMonth()->toDateString(),
+            dateTo: Carbon::today()->toDateString()
+        );
     }
 }

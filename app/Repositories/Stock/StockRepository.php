@@ -14,11 +14,12 @@ class StockRepository
         (
             $data,
             [
-                'sc_code',
                 'nm_id',
-                'barcode'
+                'barcode',
+                'warehouse_name'
             ],
             [
+                'sc_code',
                 'date',
                 'last_change_date',
                 'supplier_article',
@@ -26,7 +27,6 @@ class StockRepository
                 'subject',
                 'category',
                 'brand',
-                'warehouse_name',
                 'in_way_to_client',
                 'in_way_from_client',
                 'price',

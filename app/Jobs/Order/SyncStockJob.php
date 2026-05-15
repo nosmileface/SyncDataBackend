@@ -13,7 +13,10 @@ class SyncStockJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct
+    (
+        private string $dateFrom
+    )
     {
         //
     }
@@ -23,6 +26,6 @@ class SyncStockJob implements ShouldQueue
      */
     public function handle(SyncStockService $syncStockService): void
     {
-        $syncStockService->syncStocks();
+        $syncStockService->syncStocks(dateFrom: $this->dateFrom);
     }
 }

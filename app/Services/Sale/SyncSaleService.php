@@ -7,16 +7,13 @@ use App\Services\SyncClientService;
 
 class SyncSaleService
 {
-    private const string DEFAULT_DATE_FROM = '2026-01-01';
-    private const string DEFAULT_DATE_TO = '2026-05-14';
-
     public function __construct
     (
         private SaleRepository      $saleRepository,
         private SyncClientService   $syncClientService
     ){}
 
-    public function syncSales(): int
+    public function syncSales(string $dateFrom, string $dateTo): int
     {
         $imported = 0;
 
@@ -24,7 +21,7 @@ class SyncSaleService
 
         do
         {
-            $sales = $this->getSales(page: $page);
+            $sales = $this->getSales(dateFrom: $dateFrom, dateTo: $dateTo, page: $page);
 
             if (empty($sales['data']))
             {
@@ -36,18 +33,14 @@ class SyncSaleService
             $imported += count($sales['data']);
 
             $page++;
+
         } while ($page <= $sales['meta']['last_page']);
 
         return $imported;
     }
 
-    private function getSales(int $page): array
+    private function getSales(string $dateFrom, string $dateTo, int $page): array
     {
-        return $this->syncClientService->fetchSales
-        (
-            dateFrom: self::DEFAULT_DATE_FROM,
-            dateTo: self::DEFAULT_DATE_TO,
-            page: $page
-        );
+        return $this->syncClientService->fetchSales(dateFrom: $dateFrom, dateTo: $dateTo, page: $page);
     }
 }

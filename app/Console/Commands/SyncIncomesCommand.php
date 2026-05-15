@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\Order\SyncIncomeJob;
+use Carbon\Carbon;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -16,6 +17,10 @@ class SyncIncomesCommand extends Command
      */
     public function handle(): void
     {
-        SyncIncomeJob::dispatchSync();
+        SyncIncomeJob::dispatchSync
+        (
+            dateFrom: Carbon::today()->startOfMonth()->startOfYear()->toDateString(),
+            dateTo: Carbon::today()->toDateString()
+        );
     }
 }

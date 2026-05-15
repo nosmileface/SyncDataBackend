@@ -7,22 +7,20 @@ use App\Services\SyncClientService;
 
 class SyncStockService
 {
-    private const string DEFAULT_DATE_FROM = '2026-05-14';
-
     public function __construct
     (
         private StockRepository     $stockRepository,
         private SyncClientService   $syncClientService
     ){}
 
-    public function syncStocks(): int
+    public function syncStocks(string $dateFrom): int
     {
         $imported = 0;
 
         $page = 1;
         do
         {
-            $stocks = $this->getStocks(page: $page);
+            $stocks = $this->getStocks(dateFrom: $dateFrom, page: $page);
 
             if (empty($stocks['data']))
             {
@@ -40,12 +38,8 @@ class SyncStockService
         return $imported;
     }
 
-    private function getStocks(int $page): array
+    private function getStocks(string $dateFrom, int $page): array
     {
-        return $this->syncClientService->fetchStocks
-        (
-            dateFrom: self::DEFAULT_DATE_FROM,
-            page: $page
-        );
+        return $this->syncClientService->fetchStocks(dateFrom: $dateFrom, page: $page);
     }
 }

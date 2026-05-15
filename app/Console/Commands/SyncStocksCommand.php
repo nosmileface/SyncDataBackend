@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\Order\SyncStockJob;
+use Carbon\Carbon;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -16,6 +17,9 @@ class SyncStocksCommand extends Command
      */
     public function handle(): void
     {
-        SyncStockJob::dispatchSync();
+        SyncStockJob::dispatchSync
+        (
+            dateFrom: Carbon::today()->toDateString()
+        );
     }
 }

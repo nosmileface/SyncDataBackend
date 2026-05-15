@@ -7,16 +7,13 @@ use App\Services\SyncClientService;
 
 class SyncIncomeService
 {
-    private const string DEFAULT_DATE_FROM = '2026-01-01';
-    private const string DEFAULT_DATE_TO = '2026-05-14';
-
     public function __construct
     (
         private IncomeRepository    $incomeRepository,
         private SyncClientService   $syncClientService
     ){}
 
-    public function syncIncomes(): int
+    public function syncIncomes(string $dateFrom, string $dateTo): int
     {
         $imported = 0;
 
@@ -24,7 +21,7 @@ class SyncIncomeService
 
         do
         {
-            $incomes = $this->getIncomes(page: $page);
+            $incomes = $this->getIncomes(dateFrom: $dateFrom, dateTo: $dateTo, page: $page);
 
             if (empty($incomes['data']))
             {
@@ -42,13 +39,8 @@ class SyncIncomeService
         return $imported;
     }
 
-    private function getIncomes(int $page): array
+    private function getIncomes(string $dateFrom, string $dateTo, int $page): array
     {
-        return $this->syncClientService->fetchIncomes
-        (
-            dateFrom: self::DEFAULT_DATE_FROM,
-            dateTo: self::DEFAULT_DATE_TO,
-            page: $page
-        );
+        return $this->syncClientService->fetchIncomes(dateFrom: $dateFrom, dateTo: $dateTo, page: $page);
     }
 }

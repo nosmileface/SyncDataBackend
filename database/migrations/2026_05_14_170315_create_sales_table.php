@@ -13,37 +13,37 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->string('g_number');
-            $table->string('sale_id')->unique();
-            $table->unsignedBigInteger('income_id');
+            $table->string('g_number')->nullable();
+            $table->string('sale_id');
+            $table->unsignedBigInteger('income_id')->nullable();
             $table->string('odid')->nullable();
-            $table->date('date');
-            $table->date('last_change_date');
-            $table->unsignedBigInteger('nm_id');
-            $table->string('barcode');
-            $table->string('supplier_article');
-            $table->string('tech_size');
-            $table->string('subject');
-            $table->string('category');
-            $table->string('brand');
-            $table->string('country_name');
-            $table->string('oblast_okrug_name');
-            $table->string('region_name');
-            $table->string('warehouse_name');
-            $table->decimal('total_price', 10, 2);
-            $table->decimal('price_with_disc', 10, 2);
-            $table->decimal('finished_price', 10, 2);
-            $table->decimal('for_pay', 10, 2);
+            $table->date('date')->nullable();
+            $table->date('last_change_date')->nullable();
+            $table->bigInteger('nm_id')->nullable();
+            $table->bigInteger('barcode')->nullable();
+            $table->string('supplier_article')->nullable();
+            $table->string('tech_size')->nullable();
+            $table->string('subject')->nullable();
+            $table->string('category')->nullable();
+            $table->string('brand')->nullable();
+            $table->string('country_name')->nullable();
+            $table->string('oblast_okrug_name')->nullable();
+            $table->string('region_name')->nullable();
+            $table->string('warehouse_name')->nullable();
+            $table->decimal('total_price', 10, 2)->nullable();
+            $table->decimal('price_with_disc', 10, 2)->nullable();
+            $table->decimal('finished_price', 10, 2)->nullable();
+            $table->decimal('for_pay', 10, 2)->nullable();
             $table->decimal('promo_code_discount', 10, 2)->nullable();
-            $table->unsignedTinyInteger('discount_percent');
-            $table->decimal('spp', 5, 2);
-            $table->boolean('is_supply')->default(false);
-            $table->boolean('is_realization')->default(false);
+            $table->smallInteger('discount_percent')->nullable();
+            $table->decimal('spp', 5, 2)->nullable();
+            $table->boolean('is_supply')->default(false)->nullable();
+            $table->boolean('is_realization')->default(false)->nullable();
             $table->boolean('is_storno')->nullable();
             $table->timestamps();
 
             // Unique
-            $table->unique(['sale_id', 'nm_id', 'barcode']);
+            $table->unique(['g_number', 'sale_id', 'nm_id', 'barcode']);
         });
     }
 

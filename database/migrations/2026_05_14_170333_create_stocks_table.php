@@ -13,29 +13,29 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sc_code');
-            $table->date('date');
-            $table->date('last_change_date');
-            $table->unsignedBigInteger('nm_id');
-            $table->string('barcode');
-            $table->string('supplier_article');
-            $table->string('tech_size');
-            $table->string('subject');
-            $table->string('category');
-            $table->string('brand');
+            $table->unsignedBigInteger('sc_code')->nullable();
+            $table->date('date')->nullable();
+            $table->date('last_change_date')->nullable();
+            $table->bigInteger('nm_id');
+            $table->bigInteger('barcode');
+            $table->string('supplier_article')->nullable();
+            $table->string('tech_size')->nullable();
+            $table->string('subject')->nullable();
+            $table->string('category')->nullable();
+            $table->string('brand')->nullable();
             $table->string('warehouse_name');
-            $table->unsignedInteger('in_way_to_client')->default(0);
-            $table->unsignedInteger('in_way_from_client')->default(0);
-            $table->decimal('price', 10, 2);
-            $table->unsignedTinyInteger('discount');
-            $table->unsignedInteger('quantity')->default(0);
-            $table->unsignedInteger('quantity_full')->default(0);
-            $table->boolean('is_supply')->default(false);
-            $table->boolean('is_realization')->default(false);
+            $table->unsignedInteger('in_way_to_client')->default(0)->nullable();
+            $table->unsignedInteger('in_way_from_client')->default(0)->nullable();
+            $table->decimal('price', 10, 2)->nullable();
+            $table->unsignedTinyInteger('discount')->nullable();
+            $table->unsignedInteger('quantity')->default(0)->nullable();
+            $table->unsignedInteger('quantity_full')->default(0)->nullable();
+            $table->boolean('is_supply')->default(false)->nullable();
+            $table->boolean('is_realization')->default(false)->nullable();
             $table->timestamps();
 
             // Unique
-            $table->unique(['sc_code', 'nm_id', 'barcode']);
+            $table->unique(['nm_id', 'barcode', 'warehouse_name']);
         });
     }
 

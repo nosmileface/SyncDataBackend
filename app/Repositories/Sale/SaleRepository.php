@@ -14,12 +14,12 @@ class SaleRepository
         (
             $data,
             [
+                'g_number',
                 'sale_id',
                 'nm_id',
                 'barcode'
             ],
             [
-                'g_number',
                 'income_id',
                 'odid',
                 'date',

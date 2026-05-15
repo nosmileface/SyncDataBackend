@@ -7,16 +7,13 @@ use App\Services\SyncClientService;
 
 class SyncOrderService
 {
-    private const string DEFAULT_DATE_FROM = '2026-01-01';
-    private const string DEFAULT_DATE_TO = '2026-05-14';
-
     public function __construct
     (
         private OrderRepository     $orderRepository,
         private SyncClientService   $syncClientService
     ){}
 
-    public function syncOrders(): int
+    public function syncOrders(string $dateFrom, string $dateTo): int
     {
         $imported = 0;
 
@@ -24,7 +21,7 @@ class SyncOrderService
 
         do
         {
-            $orders = $this->getOrders(page: $page);
+            $orders = $this->getOrders(dateFrom: $dateFrom, dateTo: $dateTo, page: $page);
 
             if (empty($orders['data']))
             {
@@ -42,13 +39,8 @@ class SyncOrderService
         return $imported;
     }
 
-    private function getOrders(int $page): array
+    private function getOrders(string $dateFrom, string $dateTo, int $page): array
     {
-        return $this->syncClientService->fetchOrders
-        (
-            dateFrom: self::DEFAULT_DATE_FROM,
-            dateTo: self::DEFAULT_DATE_TO,
-            page: $page
-        );
+        return $this->syncClientService->fetchOrders(dateFrom: $dateFrom, dateTo: $dateTo, page: $page);
     }
 }

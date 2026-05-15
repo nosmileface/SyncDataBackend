@@ -7,6 +7,7 @@ use App\Services\Income\SyncIncomeService;
 use App\Services\Order\SyncOrderService;
 use App\Services\Sale\SyncSaleService;
 use App\Services\Stock\SyncStockService;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 
 class TestController extends Controller
@@ -21,7 +22,11 @@ class TestController extends Controller
 
     public function getIncomes(): JsonResponse
     {
-        $incomes = $this->syncIncomeService->syncIncomes();
+        $incomes = $this->syncIncomeService->syncIncomes
+        (
+            dateFrom: Carbon::today()->startOfMonth()->startOfYear()->toDateString(),
+            dateTo: Carbon::today()->toDateString()
+        );
 
         return response()->json
         (
@@ -33,7 +38,11 @@ class TestController extends Controller
 
     public function getOrders(): JsonResponse
     {
-        $orders = $this->syncOrderService->syncOrders();
+        $orders = $this->syncOrderService->syncOrders
+        (
+            dateFrom: Carbon::today()->startOfMonth()->toDateString(),
+            dateTo: Carbon::today()->toDateString()
+        );
 
         return response()->json
         (
@@ -45,7 +54,11 @@ class TestController extends Controller
 
     public function getSales(): JsonResponse
     {
-        $sales = $this->syncSaleService->syncSales();
+        $sales = $this->syncSaleService->syncSales
+        (
+            dateFrom: Carbon::today()->startOfMonth()->toDateString(),
+            dateTo: Carbon::today()->toDateString()
+        );
 
         return response()->json
         (
@@ -57,7 +70,10 @@ class TestController extends Controller
 
     public function getStocks(): JsonResponse
     {
-        $stocks = $this->syncStockService->syncStocks();
+        $stocks = $this->syncStockService->syncStocks
+        (
+            dateFrom: Carbon::today()->toDateString()
+        );
 
         return response()->json
         (
