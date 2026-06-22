@@ -2,10 +2,11 @@
 
 namespace App\Services\Order;
 
+use App\Abstract\AbstractSyncService;
 use App\Repositories\Order\OrderRepository;
 use App\Services\SyncClientService;
 
-class SyncOrderService
+class SyncOrderService extends AbstractSyncService
 {
     public function __construct
     (
@@ -13,34 +14,18 @@ class SyncOrderService
         private SyncClientService   $syncClientService
     ){}
 
-    public function syncOrders(string $dateFrom, string $dateTo): int
+    protected function fetch(string $dateFrom, ?string $dateTo, int $page): array
     {
-        $imported = 0;
-
-        $page = 1;
-
-        do
-        {
-            $orders = $this->getOrders(dateFrom: $dateFrom, dateTo: $dateTo, page: $page);
-
-            if (empty($orders['data']))
-            {
-                break;
-            }
-
-            $this->orderRepository->upsert(data: $orders['data']);
-
-            $imported += count($orders['data']);
-
-            $page++;
-
-        } while ($page <= $orders['meta']['last_page']);
-
-        return $imported;
+        return $this->syncClientService->fetchOrders
+        (
+            dateFrom: $dateFrom,
+            dateTo: $dateTo,
+            page: $page
+        );
     }
 
-    private function getOrders(string $dateFrom, string $dateTo, int $page): array
+    protected function upsert(array $data): void
     {
-        return $this->syncClientService->fetchOrders(dateFrom: $dateFrom, dateTo: $dateTo, page: $page);
+        $this->orderRepository->upsert(data: $data);
     }
 }
