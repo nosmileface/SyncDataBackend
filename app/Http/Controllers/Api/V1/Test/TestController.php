@@ -22,7 +22,7 @@ class TestController extends Controller
 
     public function getIncomes(): JsonResponse
     {
-        $incomes = $this->syncIncomeService->syncIncomes
+        $incomes = $this->syncIncomeService->sync
         (
             dateFrom: Carbon::today()->startOfMonth()->startOfYear()->toDateString(),
             dateTo: Carbon::today()->toDateString()
@@ -38,7 +38,7 @@ class TestController extends Controller
 
     public function getOrders(): JsonResponse
     {
-        $orders = $this->syncOrderService->syncOrders
+        $orders = $this->syncOrderService->sync
         (
             dateFrom: Carbon::today()->startOfMonth()->toDateString(),
             dateTo: Carbon::today()->toDateString()
@@ -54,7 +54,7 @@ class TestController extends Controller
 
     public function getSales(): JsonResponse
     {
-        $sales = $this->syncSaleService->syncSales
+        $sales = $this->syncSaleService->sync
         (
             dateFrom: Carbon::today()->startOfMonth()->toDateString(),
             dateTo: Carbon::today()->toDateString()
@@ -70,7 +70,7 @@ class TestController extends Controller
 
     public function getStocks(): JsonResponse
     {
-        $stocks = $this->syncStockService->syncStocks
+        $stocks = $this->syncStockService->sync
         (
             dateFrom: Carbon::today()->toDateString()
         );
