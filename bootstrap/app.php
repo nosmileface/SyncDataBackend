@@ -13,13 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withSchedule(function (Schedule $schedule): void {
-        $schedule->command('app:sync-incomes-command')->everyMinute();
+        $schedule->command('app:sync-incomes')->everyMinute()->withoutOverlapping();
 
-        $schedule->command('app:sync-orders-command')->everyMinute();
+        $schedule->command('app:sync-orders')->everyMinute()->withoutOverlapping();
 
-        $schedule->command('app:sync-sales-command')->everyMinute();
+        $schedule->command('app:sync-sales')->everyMinute()->withoutOverlapping();
 
-        $schedule->command('app:sync-stocks-command')->everyMinute();
+        $schedule->command('app:sync-stocks')->everyMinute()->withoutOverlapping();
     })
     ->withMiddleware(function (Middleware $middleware): void {
         //

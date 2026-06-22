@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Order;
+namespace App\Jobs\Stock;
 
 use App\Services\Stock\SyncStockService;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,13 +14,7 @@ class SyncStockJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct
-    (
-        private string $dateFrom
-    )
-    {
-        //
-    }
+    public function __construct(private string $dateFrom){}
 
     /**
      * Execute the job.
@@ -31,12 +25,12 @@ class SyncStockJob implements ShouldQueue
         {
             $start = microtime(true);
 
-            $stocks = $syncStockService->syncStocks(dateFrom: $this->dateFrom);
+            $count = $syncStockService->sync(dateFrom: $this->dateFrom);
 
-            $end = microtime(true);
+            $elapsed = round(microtime(true) - $start);
 
             Log::channel('stocks')
-                ->info('[SyncStocks] Данные о складах получены. Количество: ' . $stocks . ' записей. Затрачено времени: ' . round($end - $start) . 'c.');
+                ->info("[SyncStocks] Синхронизация завершена. Записей: {$count}. Время: {$elapsed}с.");
 
         } catch (\Exception $exception)
         {
