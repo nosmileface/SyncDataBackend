@@ -6,7 +6,7 @@ abstract class AbstractSyncService
 {
     protected int $page = 1;
 
-    public function sync(string $dateFrom, ?string $dateTo = null): int
+    public function sync(int $accountId, string $dateFrom, ?string $dateTo = null): int
     {
         $imported = 0;
 
@@ -19,7 +19,7 @@ abstract class AbstractSyncService
                 break;
             }
 
-            $this->upsert(data: $response['data']);
+            $this->upsert(accountId: $accountId, data: $response['data']);
 
             $imported += count($response['data']);
 
@@ -30,7 +30,7 @@ abstract class AbstractSyncService
         return $imported;
     }
 
-    abstract protected function upsert(array $data): void;
+    abstract protected function upsert(int $accountId, array $data): void;
 
     abstract protected function fetch(string $dateFrom, ?string $dateTo, int $page): array;
 }

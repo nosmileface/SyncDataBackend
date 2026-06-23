@@ -17,11 +17,6 @@ class CompanyRepository
             ->toArray();
     }
 
-    public function findById(int $id): Company
-    {
-        return $this->company->query()->findOrFail($id);
-    }
-
     public function create(string $name): Company
     {
         return $this->company->query()->create(['name' => $name]);

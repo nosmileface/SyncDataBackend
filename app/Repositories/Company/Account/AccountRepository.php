@@ -17,11 +17,6 @@ class AccountRepository
             ->toArray();
     }
 
-    public function findById(int $accountId): Account
-    {
-        return $this->account->query()->findOrFail($accountId);
-    }
-
     public function create(int $companyId, string $name): Account
     {
         return $this->account->query()->create(['company_id' => $companyId, 'name' => $name]);

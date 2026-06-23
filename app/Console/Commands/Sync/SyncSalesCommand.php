@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Sync;
 
 use App\Jobs\Sale\SyncSaleJob;
+use App\Repositories\Company\Account\AccountRepository;
 use Carbon\Carbon;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
@@ -16,12 +17,17 @@ class SyncSalesCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle(AccountRepository $accountRepository): int
     {
         try
         {
-            SyncSaleJob::dispatch
+            $accounts = $accountRepository->getForSelect();
+
+            $accountId = $this->choiceAccounts(accounts: $accounts);
+
+            SyncSaleJob::dispatchSync
             (
+                accountId: $accountId,
                 dateFrom: Carbon::today()->startOfMonth()->toDateString(),
                 dateTo: Carbon::today()->toDateString()
             );
@@ -36,5 +42,10 @@ class SyncSalesCommand extends Command
 
             return self::FAILURE;
         }
+    }
+
+    private function choiceAccounts(array $accounts): int
+    {
+        return array_search($this->choice('Выберите аккаунт:', $accounts), $accounts);
     }
 }

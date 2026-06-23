@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Models\Stock;
+namespace App\Models\Sync\Stock;
 
+use App\Models\Company\Account\Account;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable
 (
     [
+        'account_id',
         'sc_code',
         'date',
         'last_change_date',
@@ -31,5 +34,10 @@ use Illuminate\Database\Eloquent\Model;
 )]
 class Stock extends Model
 {
-    //
+    // Relations
+
+    public function account(): BelongsTo
+    {
+        return $this->belongsTo(Account::class);
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Sync\Income;
 
-use App\Models\Income\Income;
+use App\Models\Sync\Income\Income;
 
 class IncomeRepository
 {
@@ -14,6 +14,7 @@ class IncomeRepository
         (
             $data,
             [
+                'account_id',
                 'income_id',
                 'nm_id',
                 'barcode'

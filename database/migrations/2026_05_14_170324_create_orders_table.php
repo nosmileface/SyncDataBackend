@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('account_id')->constrained('accounts')->cascadeOnDelete();
             $table->string('g_number');
             $table->string('odid')->nullable();
             $table->dateTime('date')->nullable();
@@ -34,7 +35,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Unique
-            $table->unique(['g_number', 'nm_id', 'barcode']);
+            $table->unique(['account_id', 'g_number', 'nm_id', 'barcode']);
         });
     }
 

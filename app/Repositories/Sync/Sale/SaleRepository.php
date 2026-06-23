@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Sync\Sale;
 
-use App\Models\Sale\Sale;
+use App\Models\Sync\Sale\Sale;
 
 class SaleRepository
 {

@@ -8,22 +8,22 @@ Route::prefix('v1')->group(function () {
         Route::prefix('test')->name('get.test.')->group(function () {
 
             // Доходы
-            Route::get('incomes', [
+            Route::get('{accountId}/incomes', [
                 V1\Test\TestController::class, 'getIncomes'
             ])->name('incomes');
 
             // Заказы
-            Route::get('orders', [
+            Route::get('{accountId}/orders', [
                 V1\Test\TestController::class, 'getOrders'
             ])->name('orders');
 
             // Продажи
-            Route::get('sales', [
+            Route::get('{accountId}/sales', [
                 V1\Test\TestController::class, 'getSales'
             ])->name('sales');
 
             // Склады
-            Route::get('stocks', [
+            Route::get('{accountId}/stocks', [
                 V1\Test\TestController::class, 'getStocks'
             ])->name('stocks');
 

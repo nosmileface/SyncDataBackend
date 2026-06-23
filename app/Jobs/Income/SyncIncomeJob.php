@@ -14,7 +14,7 @@ class SyncIncomeJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private string $dateFrom, private string $dateTo){}
+    public function __construct(private int $accountId, private string $dateFrom, private string $dateTo){}
 
     /**
      * Execute the job.
@@ -25,7 +25,7 @@ class SyncIncomeJob implements ShouldQueue
         {
             $start = microtime(true);
 
-            $count = $syncIncomeService->sync(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+            $count = $syncIncomeService->sync(accountId: $this->accountId, dateFrom: $this->dateFrom, dateTo: $this->dateTo);
 
             $elapsed = round(microtime(true) - $start);
 

@@ -30,15 +30,11 @@ class CreateAccountTokenCommand extends Command
 
         $tokenTypes = $tokenTypeRepository->getForSelect();
 
-        $tokenTypesId = $this->choiceTokenType(tokenTypes: $tokenTypes);
-
-        $account = $accountRepository->findById(accountId: $accountId);
-
-        $tokenType = $tokenTypeRepository->findById(tokenTypeId: $tokenTypesId);
+        $tokenTypeId = $this->choiceTokenType(tokenTypes: $tokenTypes);
 
         $token = ['api_token' => $this->secret('Введите токен:')];
 
-        $accountToken = $accountTokenRepository->updateOrCreate(account: $account, tokenType: $tokenType, token: $token);
+        $accountToken = $accountTokenRepository->updateOrCreate(accountId: $accountId, tokenTypeId: $tokenTypeId, token: $token);
 
         $this->info('Токен добавлен: ID: ' . $accountToken->id);
 

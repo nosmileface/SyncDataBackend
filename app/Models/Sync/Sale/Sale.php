@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Models\Sale;
+namespace App\Models\Sync\Sale;
 
+use App\Models\Company\Account\Account;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable
 (
     [
+        'account_id',
         'g_number',
         'sale_id',
         'income_id',
@@ -39,5 +42,10 @@ use Illuminate\Database\Eloquent\Model;
 )]
 class Sale extends Model
 {
-    //
+    // Relations
+
+    public function account(): BelongsTo
+    {
+        return $this->belongsTo(Account::class);
+    }
 }

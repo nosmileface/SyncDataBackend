@@ -20,10 +20,11 @@ class TestController extends Controller
         private SyncStockService    $syncStockService
     ){}
 
-    public function getIncomes(): JsonResponse
+    public function getIncomes(int $accountId): JsonResponse
     {
         $incomes = $this->syncIncomeService->sync
         (
+            accountId: $accountId,
             dateFrom: Carbon::today()->startOfMonth()->startOfYear()->toDateString(),
             dateTo: Carbon::today()->toDateString()
         );
@@ -36,10 +37,11 @@ class TestController extends Controller
         );
     }
 
-    public function getOrders(): JsonResponse
+    public function getOrders(int $accountId): JsonResponse
     {
         $orders = $this->syncOrderService->sync
         (
+            accountId: $accountId,
             dateFrom: Carbon::today()->startOfMonth()->toDateString(),
             dateTo: Carbon::today()->toDateString()
         );
@@ -52,10 +54,11 @@ class TestController extends Controller
         );
     }
 
-    public function getSales(): JsonResponse
+    public function getSales(int $accountId): JsonResponse
     {
         $sales = $this->syncSaleService->sync
         (
+            accountId: $accountId,
             dateFrom: Carbon::today()->startOfMonth()->toDateString(),
             dateTo: Carbon::today()->toDateString()
         );
@@ -68,10 +71,11 @@ class TestController extends Controller
         );
     }
 
-    public function getStocks(): JsonResponse
+    public function getStocks(int $accountId): JsonResponse
     {
         $stocks = $this->syncStockService->sync
         (
+            accountId: $accountId,
             dateFrom: Carbon::today()->toDateString()
         );
 

@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Sync\Stock;
 
-use App\Models\Stock\Stock;
+use App\Models\Sync\Stock\Stock;
 
 class StockRepository
 {

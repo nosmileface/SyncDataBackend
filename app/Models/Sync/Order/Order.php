@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Models\Order;
+namespace App\Models\Sync\Order;
 
+use App\Models\Company\Account\Account;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable
 (
     [
+        'account_id',
         'g_number',
         'odid',
         'date',
@@ -30,5 +33,10 @@ use Illuminate\Database\Eloquent\Model;
 )]
 class Order extends Model
 {
-    //
+    // Relations
+
+    public function account(): BelongsTo
+    {
+        return $this->belongsTo(Account::class);
+    }
 }

@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Models\Income;
+namespace App\Models\Sync\Income;
 
+use App\Models\Company\Account\Account;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable
 (
     [
+        'account_id',
         'income_id',
         'date',
         'last_change_date',
@@ -24,5 +27,10 @@ use Illuminate\Database\Eloquent\Model;
 )]
 class Income extends Model
 {
-    //
+    // Relations
+
+    public function account(): BelongsTo
+    {
+        return $this->belongsTo(Account::class);
+    }
 }

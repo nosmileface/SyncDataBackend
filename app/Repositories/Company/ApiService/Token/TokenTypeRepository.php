@@ -17,11 +17,6 @@ class TokenTypeRepository
             ->toArray();
     }
 
-    public function findById(int $tokenTypeId): TokenType
-    {
-        return $this->tokenType->query()->findOrFail($tokenTypeId);
-    }
-
     public function create(int $apiServiceId, string $name, string $type): TokenType
     {
         return $this->tokenType->query()->create(['api_service_id' => $apiServiceId, 'name' => $name, 'type' => $type]);

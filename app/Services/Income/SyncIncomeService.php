@@ -24,8 +24,13 @@ class SyncIncomeService extends AbstractSyncService
         );
     }
 
-    protected function upsert(array $data): void
+    protected function upsert(int $accountId, array $data): void
     {
+        foreach ($data as &$item)
+        {
+            $item['account_id'] = $accountId;
+        }
+
         $this->incomeRepository->upsert(data: $data);
     }
 }
