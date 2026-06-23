@@ -3,10 +3,20 @@
 namespace App\Repositories\Sync\Sale;
 
 use App\Models\Sync\Sale\Sale;
+use Carbon\Carbon;
 
 class SaleRepository
 {
     public function __construct(private Sale $sale){}
+
+    public function getLastDate(int $accountId): string
+    {
+        $lastDate = $this->sale->query()
+            ->where('account_id', $accountId)
+            ->max('date');
+
+        return $lastDate ?? Carbon::today()->startOfMonth()->toDateString();
+    }
 
     public function upsert(array $data): int
     {
@@ -14,6 +24,7 @@ class SaleRepository
         (
             $data,
             [
+                'account_id',
                 'g_number',
                 'sale_id',
                 'nm_id',

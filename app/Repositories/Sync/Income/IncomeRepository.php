@@ -3,10 +3,20 @@
 namespace App\Repositories\Sync\Income;
 
 use App\Models\Sync\Income\Income;
+use Carbon\Carbon;
 
 class IncomeRepository
 {
     public function __construct(private Income $income){}
+
+    public function getLastDate(int $accountId): string
+    {
+        $lastDate = $this->income->query()
+            ->where('account_id', $accountId)
+            ->max('date');
+
+        return $lastDate ?? Carbon::today()->startOfMonth()->toDateString();
+    }
 
     public function upsert(array $data): int
     {

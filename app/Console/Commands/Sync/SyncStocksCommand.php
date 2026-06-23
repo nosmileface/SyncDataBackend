@@ -4,10 +4,12 @@ namespace App\Console\Commands\Sync;
 
 use App\Jobs\Stock\SyncStockJob;
 use App\Repositories\Company\Account\AccountRepository;
+use App\Repositories\Sync\Stock\StockRepository;
 use Carbon\Carbon;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 #[Signature('app:sync-stocks')]
@@ -17,19 +19,11 @@ class SyncStocksCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(AccountRepository $accountRepository): int
+    public function handle(StockRepository $stockRepository, AccountRepository $accountRepository): int
     {
         try
         {
-            $accounts = $accountRepository->getForSelect();
-
-            $accountId = $this->choiceAccounts(accounts: $accounts);
-
-            SyncStockJob::dispatchSync
-            (
-                accountId: $accountId,
-                dateFrom: Carbon::today()->toDateString()
-            );
+            $this->addDispatch(stockRepository: $stockRepository, accounts: $accountRepository->getAll());
 
             $this->info('[SyncStocks] Задача поставлена в очередь.');
 
@@ -43,8 +37,20 @@ class SyncStocksCommand extends Command
         }
     }
 
-    private function choiceAccounts(array $accounts): int
+    private function addDispatch(StockRepository $stockRepository, Collection $accounts): void
     {
-        return array_search($this->choice('Выберите аккаунт:', $accounts), $accounts);
+        foreach ($accounts as $account)
+        {
+            SyncStockJob::dispatch
+            (
+                accountId: $account->id,
+                dateFrom: $this->getLastDate(stockRepository: $stockRepository, accountId: $account->id)
+            );
+        }
+    }
+
+    private function getLastDate(StockRepository $stockRepository, int $accountId): string
+    {
+        return $stockRepository->getLastDate(accountId: $accountId);
     }
 }

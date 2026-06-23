@@ -3,10 +3,20 @@
 namespace App\Repositories\Sync\Order;
 
 use App\Models\Sync\Order\Order;
+use Carbon\Carbon;
 
 class OrderRepository
 {
     public function __construct(private Order $order){}
+
+    public function getLastDate(int $accountId): string
+    {
+        $lastDate = $this->order->query()
+            ->where('account_id', $accountId)
+            ->max('date');
+
+        return $lastDate ?? Carbon::today()->startOfMonth()->toDateString();
+    }
 
     public function upsert(array $data): int
     {
@@ -14,6 +24,7 @@ class OrderRepository
         (
             $data,
             [
+                'account_id',
                 'g_number',
                 'nm_id',
                 'barcode'
