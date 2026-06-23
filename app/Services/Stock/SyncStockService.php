@@ -3,7 +3,7 @@
 namespace App\Services\Stock;
 
 use App\Abstract\AbstractSyncService;
-use App\Repositories\Stock\StockRepository;
+use App\Repositories\Sync\Stock\StockRepository;
 use App\Services\SyncClientService;
 
 class SyncStockService extends AbstractSyncService

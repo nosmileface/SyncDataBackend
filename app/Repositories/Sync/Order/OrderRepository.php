@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Order;
+namespace App\Repositories\Sync\Order;
 
 use App\Models\Order\Order;
 

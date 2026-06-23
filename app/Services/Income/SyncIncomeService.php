@@ -3,7 +3,7 @@
 namespace App\Services\Income;
 
 use App\Abstract\AbstractSyncService;
-use App\Repositories\Income\IncomeRepository;
+use App\Repositories\Sync\Income\IncomeRepository;
 use App\Services\SyncClientService;
 
 class SyncIncomeService extends AbstractSyncService

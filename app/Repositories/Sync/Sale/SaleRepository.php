@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Sale;
+namespace App\Repositories\Sync\Sale;
 
 use App\Models\Sale\Sale;
 

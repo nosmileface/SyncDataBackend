@@ -12,25 +12,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     [
         'account_id',
         'token_type_id',
-        'api_token',
-        'bearer',
-        'login',
-        'password',
-        'access_token',
-        'refresh_token',
-        'expires_at'
+        'token'
     ]
 )]
 
 class AccountToken extends Model
 {
-    protected $casts = [
-        'api_token' => 'encrypted',
-        'bearer' => 'encrypted',
-        'password' => 'encrypted',
-        'access_token' => 'encrypted',
-        'refresh_token' => 'encrypted'
-    ];
+    protected $casts = ['token' => 'encrypted:array'];
 
     // Relations
 

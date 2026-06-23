@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Stock;
+namespace App\Repositories\Sync\Stock;
 
 use App\Models\Stock\Stock;
 

@@ -15,13 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('account_id')->constrained('accounts')->cascadeOnDelete();
             $table->foreignId('token_type_id')->constrained('token_types')->cascadeOnDelete();
-            $table->text('token')->nullable();
-            $table->text('bearer')->nullable();
-            $table->string('login')->nullable();
-            $table->text('password')->nullable();
-            $table->text('access_token')->nullable();
-            $table->text('refresh_token')->nullable();
-            $table->timestamp('expires_at')->nullable();
+            $table->text('token');
             $table->timestamps();
 
             // Unique

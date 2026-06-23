@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Sync;
 
-use App\Jobs\Sale\SyncSaleJob;
+use App\Jobs\Order\SyncOrderJob;
 use Carbon\Carbon;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-#[Signature('app:sync-sales')]
-#[Description('Команда синхронизации продаж.')]
-class SyncSalesCommand extends Command
+#[Signature('app:sync-orders')]
+#[Description('Команда синхронизации заказов.')]
+class SyncOrdersCommand extends Command
 {
     /**
      * Execute the console command.
@@ -20,19 +20,20 @@ class SyncSalesCommand extends Command
     {
         try
         {
-            SyncSaleJob::dispatch
+            SyncOrderJob::dispatch
             (
                 dateFrom: Carbon::today()->startOfMonth()->toDateString(),
                 dateTo: Carbon::today()->toDateString()
             );
 
-            $this->info('[SyncSales] Задача поставлена в очередь.');
+            $this->info('[SyncOrders] Задача поставлена в очередь.');
 
             return self::SUCCESS;
+
         } catch (\Exception $exception)
         {
-            Log::channel('sales')
-                ->error('[SyncSales] Ошибка постановки задачи. Исключение: ' . $exception);
+            Log::channel('orders')
+                ->error('[SyncOrders] Ошибка постановки задачи. Исключение: ' . $exception);
 
             return self::FAILURE;
         }

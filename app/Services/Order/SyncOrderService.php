@@ -3,7 +3,7 @@
 namespace App\Services\Order;
 
 use App\Abstract\AbstractSyncService;
-use App\Repositories\Order\OrderRepository;
+use App\Repositories\Sync\Order\OrderRepository;
 use App\Services\SyncClientService;
 
 class SyncOrderService extends AbstractSyncService

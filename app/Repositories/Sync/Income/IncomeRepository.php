@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Income;
+namespace App\Repositories\Sync\Income;
 
 use App\Models\Income\Income;
 

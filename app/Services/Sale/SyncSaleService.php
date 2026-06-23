@@ -3,7 +3,7 @@
 namespace App\Services\Sale;
 
 use App\Abstract\AbstractSyncService;
-use App\Repositories\Sale\SaleRepository;
+use App\Repositories\Sync\Sale\SaleRepository;
 use App\Services\SyncClientService;
 
 class SyncSaleService extends AbstractSyncService
