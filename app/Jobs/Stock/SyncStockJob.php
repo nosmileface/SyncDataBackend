@@ -11,14 +11,8 @@ class SyncStockJob implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct(private int $accountId, private string $dateFrom){}
 
-    /**
-     * Execute the job.
-     */
     public function handle(SyncStockService $syncStockService): void
     {
         try
