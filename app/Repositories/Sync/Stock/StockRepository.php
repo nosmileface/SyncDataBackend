@@ -2,12 +2,22 @@
 
 namespace App\Repositories\Sync\Stock;
 
+use App\Constant\Query;
 use App\Models\Sync\Stock\Stock;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class StockRepository
 {
     public function __construct(private Stock $stock){}
+
+    public function getAll(int $accountId, array $filters): LengthAwarePaginator
+    {
+        return $this->stock->query()
+            ->where('account_id', $accountId)
+            ->orderBy(Query::COLUMN_ID, Query::SORT_DESC)
+            ->paginate($filters['perPage'] ?? Query::PER_PAGE);
+    }
 
     public function getLastDate(int $accountId): string
     {

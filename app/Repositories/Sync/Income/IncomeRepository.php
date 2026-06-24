@@ -2,12 +2,24 @@
 
 namespace App\Repositories\Sync\Income;
 
+use App\Constant\Query;
 use App\Models\Sync\Income\Income;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class IncomeRepository
 {
+    private const int SUB_DAYS = 3;
+
     public function __construct(private Income $income){}
+
+    public function getAll(int $accountId, array $filters): LengthAwarePaginator
+    {
+        return $this->income->query()
+            ->where('account_id', $accountId)
+            ->orderBy(Query::COLUMN_ID, Query::SORT_DESC)
+            ->paginate($filters['perPage'] ?? Query::PER_PAGE);
+    }
 
     public function getLastDate(int $accountId): string
     {
@@ -15,7 +27,9 @@ class IncomeRepository
             ->where('account_id', $accountId)
             ->max('date');
 
-        return $lastDate ?? Carbon::today()->startOfMonth()->toDateString();
+        return $lastDate
+            ? Carbon::parse($lastDate)->subDays(self::SUB_DAYS)->toDateString()
+            : Carbon::today()->startOfYear()->toDateString();
     }
 
     public function upsert(array $data): int

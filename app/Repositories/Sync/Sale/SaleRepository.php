@@ -2,12 +2,22 @@
 
 namespace App\Repositories\Sync\Sale;
 
+use App\Constant\Query;
 use App\Models\Sync\Sale\Sale;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class SaleRepository
 {
     public function __construct(private Sale $sale){}
+
+    public function getAll(int $accountId, array $filters): LengthAwarePaginator
+    {
+        return $this->sale->query()
+            ->where('account_id', $accountId)
+            ->orderBy(Query::COLUMN_ID, Query::SORT_DESC)
+            ->paginate($filters['perPage'] ?? Query::PER_PAGE);
+    }
 
     public function getLastDate(int $accountId): string
     {
