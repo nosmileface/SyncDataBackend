@@ -11,21 +11,15 @@ class SyncOrderJob implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new job instance.
-     */
-    public function __construct(private string $dateFrom, private string $dateTo){}
+    public function __construct(private int $accountId, private string $dateFrom, private string $dateTo){}
 
-    /**
-     * Execute the job.
-     */
     public function handle(SyncOrderService $syncOrderService): void
     {
         try
         {
             $start = microtime(true);
 
-            $count = $syncOrderService->sync(dateFrom: $this->dateFrom, dateTo: $this->dateTo);
+            $count = $syncOrderService->sync(accountId: $this->accountId, dateFrom: $this->dateFrom, dateTo: $this->dateTo);
 
             $elapsed = round(microtime(true) - $start);
 

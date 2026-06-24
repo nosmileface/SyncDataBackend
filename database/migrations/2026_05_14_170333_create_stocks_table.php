@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('account_id')->constrained('accounts')->cascadeOnDelete();
             $table->unsignedBigInteger('sc_code')->nullable();
             $table->date('date')->nullable();
             $table->date('last_change_date')->nullable();
@@ -35,7 +36,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Unique
-            $table->unique(['nm_id', 'barcode', 'warehouse_name']);
+            $table->unique(['account_id', 'nm_id', 'barcode', 'warehouse_name']);
         });
     }
 

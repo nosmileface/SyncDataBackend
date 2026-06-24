@@ -3,7 +3,7 @@
 namespace App\Services\Sale;
 
 use App\Abstract\AbstractSyncService;
-use App\Repositories\Sale\SaleRepository;
+use App\Repositories\Sync\Sale\SaleRepository;
 use App\Services\SyncClientService;
 
 class SyncSaleService extends AbstractSyncService
@@ -24,8 +24,13 @@ class SyncSaleService extends AbstractSyncService
         );
     }
 
-    protected function upsert(array $data): void
+    protected function upsert(int $accountId, array $data): void
     {
+        foreach ($data as &$item)
+        {
+            $item['account_id'] = $accountId;
+        }
+
         $this->saleRepository->upsert(data: $data);
     }
 }

@@ -4,27 +4,25 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1;
 
 Route::prefix('v1')->group(function () {
-    Route::prefix('test')->name('get.test.')->group(function () {
-
+    Route::middleware('throttle:60,1')->group(function () {
         // Доходы
-        Route::get('incomes', [
-            V1\Test\TestController::class, 'getIncomes'
+        Route::get('{accountId}/incomes', [
+            V1\Income\IncomeController::class, 'getIncomes'
         ])->name('incomes');
 
         // Заказы
-        Route::get('orders', [
-            V1\Test\TestController::class, 'getOrders'
+        Route::get('{accountId}/orders', [
+            V1\Order\OrderController::class, 'getOrders'
         ])->name('orders');
 
         // Продажи
-        Route::get('sales', [
-            V1\Test\TestController::class, 'getSales'
+        Route::get('{accountId}/sales', [
+            V1\Sale\SaleController::class, 'getSales'
         ])->name('sales');
 
         // Склады
-        Route::get('stocks', [
-            V1\Test\TestController::class, 'getStocks'
+        Route::get('{accountId}/stocks', [
+            V1\Stock\StockController::class, 'getStocks'
         ])->name('stocks');
-
     });
 });

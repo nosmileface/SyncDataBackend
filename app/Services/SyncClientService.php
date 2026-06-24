@@ -11,6 +11,9 @@ class SyncClientService
     private const string SYNC_STOCKS_ENDPOINT = 'stocks';
     private const string SYNC_INCOMES_ENDPOINT = 'incomes';
 
+    private const int RETRY_TIMES = 3;
+    private const int RETRY_DELAY = 1000;
+
     public function fetchIncomes(string $dateFrom, string $dateTo, int $page): array
     {
         return $this->fetch
@@ -72,7 +75,7 @@ class SyncClientService
 
     private function fetch(string $endpoint, array $params = []): array
     {
-        $response = Http::retry(3, 10)
+        $response = Http::retry(self::RETRY_TIMES, self::RETRY_DELAY)
             ->get(config('sync.api_url') . ':' . config('sync.api_port') . '/api/' . $endpoint, $params);
 
         if (!$response->successful())

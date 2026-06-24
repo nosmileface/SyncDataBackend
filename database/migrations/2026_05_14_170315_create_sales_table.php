@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('account_id')->constrained('accounts')->cascadeOnDelete();
             $table->string('g_number')->nullable();
             $table->string('sale_id');
             $table->unsignedBigInteger('income_id')->nullable();
@@ -43,7 +44,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Unique
-            $table->unique(['g_number', 'sale_id', 'nm_id', 'barcode']);
+            $table->unique(['account_id', 'g_number', 'sale_id', 'nm_id', 'barcode']);
         });
     }
 

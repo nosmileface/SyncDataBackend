@@ -8,63 +8,112 @@ Laravel-приложение для синхронизации торговых 
 
 - PHP 8.5
 - Laravel 13
-- SQLite
+- MySQL 8.0
+- Docker
 
 ---
 
-## Установка
+## Установка и запуск через Docker
 
 ```bash
 git clone https://github.com/nosmileface/SyncDataBackend.git
 cd SyncDataBackend
-
-composer install
-
 cp .env.example .env
-php artisan key:generate
+```
 
-Указать данные предоставленного сервера
+В `.env` укажите:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_EXTERNAL_PORT=3307
+DB_DATABASE=sync_db
+DB_USERNAME=sync_user
+DB_PASSWORD=sync_password
+DB_ROOT_PASSWORD=root
 
 API_URL=
 API_PORT=
 API_KEY=
 ```
 
+Запустите контейнеры:
+
+```bash
+docker-compose up -d --build
+```
+
+Выполните миграции и сидеры:
+
+```bash
+docker-compose exec php php artisan key:generate
+docker-compose exec php php artisan migrate
+docker-compose exec php php artisan db:seed
+```
+
+Приложение доступно на `http://localhost:8080`
+
+---
+
+## Установка без Docker
+
+```bash
+git clone https://github.com/nosmileface/SyncDataBackend.git
+cd SyncDataBackend
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+
 В `.env` укажите:
 
 ```env
-DB_CONNECTION=sqlite
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=sync_db
+DB_USERNAME=sync_user
+DB_PASSWORD=sync_password
+
+API_URL=
+API_PORT=
+API_KEY=
 ```
 
-Создайте файл базы данных и выполните миграции:
-
 ```bash
-touch database/database.sqlite
 php artisan migrate
+php artisan serve
 ```
 
 ---
 
-## Запуск
+## Управление сущностями
+
+Создание компании, аккаунтов, API-сервисов и токенов через консоль:
 
 ```bash
-php artisan serve
+php artisan app:create-company
+php artisan app:create-account
+php artisan app:create-api-service
+php artisan app:create-token-type
+php artisan app:create-account-token
 ```
 
 ---
 
 ## Синхронизация данных
 
-### Вручную (разовый запуск)
+### Вручную
 
 ```bash
-php artisan app:sync-incomes-command
-php artisan app:sync-orders-command
-php artisan app:sync-sales-command
-php artisan app:sync-stocks-command
+php artisan app:sync-incomes
+php artisan app:sync-orders
+php artisan app:sync-sales
+php artisan app:sync-stocks
 ```
 
-### По расписанию (ежедневно, автоматически)
+### По расписанию (ежедневно дважды в день — 6:00 и 18:00)
 
 Добавьте в crontab:
 
@@ -72,38 +121,23 @@ php artisan app:sync-stocks-command
 * * * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
-Или запустите планировщик вручную для отладки:
-
-```bash
-php artisan schedule:run
-```
-
 ---
 
 ## API
 
-После запуска доступны эндпоинты для проверки данных:
+| Метод | URL             | Описание |
+|-------|-----------------|----------|
+| GET | `/api/v1/incomes` | Доходы |
+| GET | `/api/v1/orders` | Заказы |
+| GET | `/api/v1/sales` | Продажи |
+| GET | `/api/v1/stocks` | Склады |
 
-| Метод | URL | Описание |
-|-------|-----|----------|
-| GET | `/api/v1/test/incomes` | Доходы |
-| GET | `/api/v1/test/orders` | Заказы |
-| GET | `/api/v1/test/sales` | Продажи |
-| GET | `/api/v1/test/stocks` | Склады |
+```bash
+perPage - кол - во записей на странице.
+page - переключить страницу.
+```
 
 ---
-
-## Структура
-
-```
-app/
-├── Console/Commands/     # Artisan-команды запуска синхронизации
-├── Jobs/Order/           # Очередные задачи (SyncIncomeJob и др.)
-├── Models/               # Eloquent-модели (Income, Order, Sale, Stock)
-├── Repositories/         # Слой работы с БД
-├── Services/             # Бизнес-логика синхронизации
-└── Http/                 # API-контроллеры
-```
 
 ---
 
@@ -112,8 +146,8 @@ app/
 Каждый тип данных пишет в отдельный канал:
 
 ```
-storage/logs/incomes/incomes.log
-storage/logs/orders/orders.log
-storage/logs/sales/sales.log
-storage/logs/stocks/stocks.log
+storage/logs/incomes.log
+storage/logs/orders.log
+storage/logs/sales.log
+storage/logs/stocks.log
 ```

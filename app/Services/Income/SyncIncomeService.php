@@ -3,7 +3,7 @@
 namespace App\Services\Income;
 
 use App\Abstract\AbstractSyncService;
-use App\Repositories\Income\IncomeRepository;
+use App\Repositories\Sync\Income\IncomeRepository;
 use App\Services\SyncClientService;
 
 class SyncIncomeService extends AbstractSyncService
@@ -24,8 +24,13 @@ class SyncIncomeService extends AbstractSyncService
         );
     }
 
-    protected function upsert(array $data): void
+    protected function upsert(int $accountId, array $data): void
     {
+        foreach ($data as &$item)
+        {
+            $item['account_id'] = $accountId;
+        }
+
         $this->incomeRepository->upsert(data: $data);
     }
 }
