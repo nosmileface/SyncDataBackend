@@ -47,6 +47,7 @@ docker-compose up -d --build
 Выполните миграции и сидеры:
 
 ```bash
+docker-compose exec php composer install
 docker-compose exec php php artisan key:generate
 docker-compose exec php php artisan migrate
 docker-compose exec php php artisan db:seed
@@ -82,9 +83,14 @@ API_KEY=
 ```
 
 ```bash
+php composer install
+php artisan key:generate
 php artisan migrate
+php artisan db:seed
 php artisan serve
 ```
+
+Приложение доступно на `http://localhost:8000`
 
 ---
 
